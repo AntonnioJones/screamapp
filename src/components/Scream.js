@@ -8,17 +8,19 @@ import { Link } from "react-router-dom";
 
 const styles = {
   card: {
-    position: "relative",
-    display: "flex",
+    position: 'relative',
+    display: 'flex',
     marginBottom: 20,
+    marginRight: 10,
+    marginLeft: 10
   },
   image: {
-    minWidth: 200,
+    minWidth: 200
   },
   content: {
     padding: 25,
-    objectFit: "cover",
-  },
+    objectFit: 'cover'
+  }
 };
 
 export class Scream extends Component {
