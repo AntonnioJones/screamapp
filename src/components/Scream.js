@@ -5,6 +5,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 const styles = {
   card: {
@@ -25,6 +27,7 @@ const styles = {
 
 export class Scream extends Component {
   render() {
+    dayjs.extend(relativeTime);
     const {
       classes,
       scream: { body, createdAt, userImage, userHandle },
@@ -46,7 +49,7 @@ export class Scream extends Component {
             {userHandle}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            {createdAt}
+            {dayjs(createdAt).fromNow()}
           </Typography>
           <Typography variant="body1">{body}</Typography>
         </CardContent>
