@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import CircularProgress from '@material-ui/core/CircularProgress'
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 //redux
-import {connect} from 'react-redux';
-import {loginUser} from '../redux/actions/userActions';
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/userActions";
 
 const styles = {
   form: {
@@ -27,16 +27,16 @@ const styles = {
   },
   button: {
     marginTop: 20,
-    position: 'relative'
+    position: "relative",
   },
-  customError:{
-    color: 'red',
-    fontSize: '0.8rem',
-    marginTop: '10px'
+  customError: {
+    color: "red",
+    fontSize: "0.8rem",
+    marginTop: "10px",
   },
   progress: {
-    position: 'absolute'
-  }
+    position: "absolute",
+  },
 };
 
 export class login extends Component {
@@ -50,7 +50,7 @@ export class login extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     if (nextProps.UI.errors) {
       this.setState({ errors: nextProps.UI.errors });
     }
@@ -72,7 +72,10 @@ export class login extends Component {
   };
 
   render() {
-    const { classes, UI: {loading} } = this.props;
+    const {
+      classes,
+      UI: { loading },
+    } = this.props;
     const { errors } = this.state;
 
     return (
@@ -87,6 +90,7 @@ export class login extends Component {
             <TextField
               id="email"
               name="email"
+              type="email"
               label="Email"
               className={classes.textField}
               helperText={errors.email}
@@ -98,6 +102,7 @@ export class login extends Component {
             <TextField
               id="password"
               name="password"
+              type="password"
               label="Password"
               className={classes.textField}
               helperText={errors.password}
@@ -107,10 +112,7 @@ export class login extends Component {
               fullWidth
             ></TextField>
             {errors.general && (
-              <Typography
-                variants="body2"
-                className={classes.customError}
-              >
+              <Typography variants="body2" className={classes.customError}>
                 {errors.general}
               </Typography>
             )}
@@ -127,7 +129,9 @@ export class login extends Component {
               )}
             </Button>
             <br />
-            <small>dont have an account ?<Link to="/signup">sign up</Link></small>
+            <small>
+              dont have an account ?<Link to="/signup">sign up</Link>
+            </small>
           </form>
         </Grid>
         <Grid item sm />
@@ -140,16 +144,19 @@ login.propTypes = {
   classes: PropTypes.object.isRequired,
   loginUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  UI: PropTypes.object.isRequired
+  UI: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  UI: state.UI
-})
+  UI: state.UI,
+});
 
 const mapActionsToProps = {
-  loginUser
-}
+  loginUser,
+};
 
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(login));
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(login));
