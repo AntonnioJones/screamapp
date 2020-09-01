@@ -9,6 +9,10 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Axios from "axios";
 
+//redux
+import {connect} from 'react-redux';
+import {signupUser} from '../redux/actions/userActions'
+
 
 const styles = {
     form: {
