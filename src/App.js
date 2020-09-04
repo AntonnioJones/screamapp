@@ -3,30 +3,35 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import themeFile from "./util/theme";
 import jwtDecode from "jwt-decode";
 //redux
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import {SET_AUTHENTICATED} from './redux/types';
+import {logoutUser, getUserData} from './redux/actions/userActions';
 //componets
 import Navbar from "./components/Navbar";
+import themeObject from "./util/theme";
 import AuthRoute from "./util/AuthRoute";
 //pages
 import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signup";
+import Axios from "axios";
 
-const theme = createMuiTheme(themeFile);
+const theme = createMuiTheme(themeObject);
 
-let authenticated;
+
 const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);
   if (decodedToken.exp * 1000 < Date.now()) {
+    store.dispatch(logoutUser());
     window.location.href = "/login";
-    authenticated = false;
   } else {
-    authenticated = true;
+    store.dispatch({type: SET_AUTHENTICATED});
+    Axios.defaults.headers.common['Authorization'] = token;
+    store.dispatch(getUserData());
   }
 }
 
@@ -44,13 +49,11 @@ class App extends Component {
                   exact
                   path="/login"
                   component={login}
-                  authenticated={authenticated}
                 />
                 <AuthRoute
                   exact
                   path="/signup"
                   component={signup}
-                  authenticated={authenticated}
                 />
               </Switch>
             </div>
