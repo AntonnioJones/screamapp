@@ -3,85 +3,119 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import EditDetails from "./EditDetails";
+import NavButtons from "../util/NavButtons";
 
 //MUI stuff
 import Button from "@material-ui/core/Button";
 import MuiLink from "@material-ui/core/Link";
 import Typeography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper"
+import Paper from "@material-ui/core/Paper";
 
 //Icons
 import LinkIcon from "@material-ui/icons/Link";
 import LocationOn from "@material-ui/icons/LocationOn";
 import CalendarToday from "@material-ui/icons/CalendarToday";
+import EditIcon from "@material-ui/icons/Edit";
+import KeyboardReturn from "@material-ui/icons/KeyboardReturn";
+
 //redux
 import { connect } from "react-redux";
+import { logoutUser, uploadImage } from "../redux/actions/userActions";
 
 const styles = (theme) => ({
   paper: {
-    padding: 20
+    padding: 20,
   },
   profile: {
-    '& .image-wrapper': {
-      textAlign: 'center',
-      position: 'relative',
-      '& button': {
-        position: 'absolute',
-        top: '80%',
-        left: '70%'
-      }
+    "& .image-wrapper": {
+      textAlign: "center",
+      position: "relative",
+      "& button": {
+        position: "absolute",
+        top: "80%",
+        left: "70%",
+      },
     },
-    '& .profile-image': {
+    "& .profile-image": {
       width: 200,
       height: 200,
-      objectFit: 'cover',
-      maxWidth: '100%',
-      borderRadius: '50%'
+      objectFit: "cover",
+      maxWidth: "100%",
+      borderRadius: "50%",
     },
-    '& .profile-details': {
-      textAlign: 'center',
-      '& span, svg': {
-        verticalAlign: 'middle'
+    "& .profile-details": {
+      textAlign: "center",
+      "& span, svg": {
+        verticalAlign: "middle",
       },
-      '& a': {
-        color: '#00bcd4'
-      }
+      "& a": {
+        color: "#00bcd4",
+      },
     },
-    '& hr': {
-      border: 'none',
-      margin: '0 0 10px 0'
+    "& hr": {
+      border: "none",
+      margin: "0 0 10px 0",
     },
-    '& svg.button': {
-      '&:hover': {
-        cursor: 'pointer'
-      }
-    }
+    "& svg.button": {
+      "&:hover": {
+        cursor: "pointer",
+      },
+    },
   },
   buttons: {
-    textAlign: 'center',
-    '& a': {
-      margin: '20px 10px'
-    }
-  }
+    textAlign: "center",
+    "& a": {
+      margin: "20px 10px",
+    },
+  },
 });
 
 class Profile extends Component {
+  handleImageChange = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append("image", image, image.name);
+    this.props.uploadImage(formData);
+  };
+
+  handleEditPicture = () => {
+    const fileInput = document.getElementById("imageInput");
+    fileInput.click();
+  };
+
+  handleLogout = () => {
+    this.props.logoutUser();
+  };
+
   render() {
     const {
       classes,
       user: {
         credentials: { handle, createdAt, imageUrl, bio, website, location },
         loading,
-        authenticated
+        authenticated,
       },
     } = this.props;
-
     let profileMarkup = !loading ? (
       authenticated ? (
         <Paper className={classes.paper}>
           <div className={classes.profile}>
             <div className="image-wrapper">
               <img src={imageUrl} alt="profile" className="profile-image" />
+              <input
+                type="file"
+                id="imageInput"
+                hidden="hidden"
+                onChange={this.handleImageChange}
+              />
+              <NavButtons
+                tip="Edit Profile Picture"
+                onClick={this.handleEditPicture}
+                btnClassName="button"
+              >
+                <EditIcon color="primary" />
+              </NavButtons>
             </div>
             <hr />
             <div className="profile-details">
@@ -99,21 +133,30 @@ class Profile extends Component {
               {location && (
                 <Fragment>
                   <LocationOn color="primary" /> <span>{location}</span>
-                  <hr/>
+                  <hr />
                 </Fragment>
               )}
               {website && (
                 <Fragment>
                   <LinkIcon color="primary" />
                   <a href={website} target="_blank" rel="noopener noreferrer">
-                    {' '}{website}
+                    {" "}
+                    {website}
                   </a>
-                  <hr/>
+                  <hr />
                 </Fragment>
               )}
-              <CalendarToday color="primary"/>{' '}
-              <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+              <CalendarToday color="primary" />{" "}
+              <span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
             </div>
+            <NavButtons
+                tip="Logout"
+                onClick={this.handleLogout}
+                btnClassName="button"
+              >
+                <KeyboardReturn color="primary" />
+              </NavButtons>
+            <EditDetails />
           </div>
         </Paper>
       ) : (
@@ -122,10 +165,20 @@ class Profile extends Component {
             No profile found, please login again
           </Typeography>
           <div className={classes.buttons}>
-            <Button variant="contained" color="primary" component={Link} to="/login">
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to="/login"
+            >
               Login
             </Button>
-            <Button variant="contained" color="secondary" component={Link} to="/signup">
+            <Button
+              variant="contained"
+              color="secondary"
+              component={Link}
+              to="/signup"
+            >
               Sign Up
             </Button>
           </div>
@@ -140,14 +193,19 @@ class Profile extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
 });
 
+const mapActionsToProps = { logoutUser, uploadImage };
+
 Profile.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapActionsToProps
 )(withStyles(styles)(Profile));

@@ -25,8 +25,8 @@ export class home extends Component {
   }
   render() {
     let recentScreamsMarkup = this.state.screams ? (
-      this.state.screams.map((scream,index) => {
-        return <Scream key={index} scream={scream} />
+      this.state.screams.map((scream) => {
+        return <Scream key={scream.screamId} scream={scream} />
       })
     ) : (
       <p>Loading...</p>
@@ -38,7 +38,7 @@ export class home extends Component {
         {recentScreamsMarkup}
         </Grid>
         <Grid item sm={4} xs={12}>
-          <Profile></Profile>
+          <Profile/>
         </Grid>
       </Grid>
     );

@@ -32,17 +32,16 @@ export const loginUser = (userData, history) => (dispatch) => {
 };
 
 export const getUserData = () => (dispatch) => {
-  dispatch({type: LOADING_USER});
-  Axios.get("/user")
+  dispatch({ type: LOADING_USER });
+  Axios
+    .get('/user')
     .then((res) => {
       dispatch({
         type: SET_USER,
-        payload: res.data,
+        payload: res.data
       });
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 };
 
 export const signupUser = (newUserData, history) => (dispatch) => {
@@ -66,4 +65,23 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('FBIdToken');
   delete Axios.defaults.headers.common['Authorization'];
   dispatch({type: SET_UNAUTHENTICATED});
+}
+
+export const uploadImage = (formData) => (dispatch) => {
+  dispatch({ type: LOADING_USER });
+  Axios
+    .post('/user/image', formData)
+    .then(() => {
+      dispatch(getUserData());
+    })
+    .catch((err) => console.log(err));
+};
+
+export const editUserDetails = (userDetails) => (dispatch) => {
+  dispatch({type: LOADING_USER})
+  Axios.post('/user', userDetails)
+    .then(() => {
+      dispatch(getUserData())
+    })
+    .catch(err => console.log(err));
 }
