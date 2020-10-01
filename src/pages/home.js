@@ -18,7 +18,7 @@ class home extends Component {
     let recentScreamsMarkup = !loading ? (
       screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
     ) : (
-      <div></div>
+      <div>...loading</div>
     );
     return (
       <Grid container>
@@ -34,8 +34,11 @@ class home extends Component {
 }
 
 home.propTypes = {
-  getScreams: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired
+  likeScream: PropTypes.func.isRequired,
+  unlikeScream: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  scream: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
