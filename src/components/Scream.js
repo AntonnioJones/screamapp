@@ -12,6 +12,7 @@ import NavButtons from "../util/NavButtons";
 import ChatIcon from "@material-ui/icons/Chat";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import DeleteScream from "./DeleteScream";
 import { connect } from 'react-redux';
 
 const styles = {
@@ -65,7 +66,8 @@ export class Scream extends Component {
         commentCount,
       },
       user: {
-        authenticated
+        authenticated,
+        credentials: {handle}
       }
     } = this.props;
 
@@ -86,6 +88,10 @@ export class Scream extends Component {
         </NavButtons>
       )
     );
+    const deleteButton =
+      authenticated && userHandle === handle ? (
+        <DeleteScream screamId={screamId} />
+      ) : null;
     return (
       <Card className={classes.card}>
         <CardMedia
@@ -101,6 +107,7 @@ export class Scream extends Component {
             color={"primary"}
           >
             {userHandle}
+            {deleteButton}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             {dayjs(createdAt).fromNow()}
