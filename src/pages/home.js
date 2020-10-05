@@ -6,6 +6,7 @@ import Scream from '../components/Scream';
 import Profile from '../components/Profile';
 
 
+
 import { connect } from 'react-redux';
 import { getScreams } from '../redux/actions/dataActions';
 
