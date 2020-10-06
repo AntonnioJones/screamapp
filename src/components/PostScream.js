@@ -44,14 +44,14 @@ class PostScream extends Component {
           })
       }
       if(!nextProps.UI.errors && !nextProps.UI.loading){
-          this.setState({body: ''});
-          this.handleClose();
+          this.setState({body: '',open: false, errors: {}});
       }
   }
   handleOpen = () => {
     this.setState({ open: true });
   };
   handleClose = () => {
+    this.props.clearErrors();
     this.setState({ open: false, errors: {} });
   };
 
@@ -129,6 +129,7 @@ class PostScream extends Component {
 
 PostScream.propTypes = {
   postScream: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
 };
 
