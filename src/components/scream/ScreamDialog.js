@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import NavButtons from '../util/NavButtons';
+import NavButtons from '../../util/NavButtons';
 import LikeButton from './LikeButton';
 import Comments from './Comments';
 import CommentForm from './CommentForm';
@@ -22,7 +22,6 @@ import { connect } from 'react-redux';
 import { getScream, clearErrors } from '../../redux/actions/dataActions';
 
 const styles = (theme) => ({
-  ...theme,
   profileImage: {
     maxWidth: 200,
     height: 200,

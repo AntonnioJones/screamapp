@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import NavButtons from "../util/NavButtons";
-import PostScream from '../components/PostScream';
+import NavButtons from "../../util/NavButtons";
+import PostScream from '../scream/PostScream';
 //mui
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 //icons
 import HomeIcon from "@material-ui/icons/Home";
 import Notifications from "@material-ui/icons/Notifications";
-import "../App.css";
+import "../../App.css";
 
 class Navbar extends Component {
   render() {
