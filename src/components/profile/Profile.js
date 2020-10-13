@@ -5,70 +5,24 @@ import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import EditDetails from "./EditDetails";
 import NavButtons from "../../util/NavButtons";
-
-//MUI stuff
+import ProfileSkeleton from "../../util/ProfileSkeleton";
+// MUI stuff
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import MuiLink from "@material-ui/core/Link";
-import Typeography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-
-//Icons
-import LinkIcon from "@material-ui/icons/Link";
+// Icons
 import LocationOn from "@material-ui/icons/LocationOn";
+import LinkIcon from "@material-ui/icons/Link";
 import CalendarToday from "@material-ui/icons/CalendarToday";
 import EditIcon from "@material-ui/icons/Edit";
 import KeyboardReturn from "@material-ui/icons/KeyboardReturn";
-
-//redux
+//Redux
 import { connect } from "react-redux";
 import { logoutUser, uploadImage } from "../../redux/actions/userActions";
 
 const styles = (theme) => ({
-  paper: {
-    padding: 20,
-  },
-  profile: {
-    "& .image-wrapper": {
-      textAlign: "center",
-      position: "relative",
-      "& button": {
-        position: "absolute",
-        top: "80%",
-        left: "70%",
-      },
-    },
-    "& .profile-image": {
-      width: 200,
-      height: 200,
-      objectFit: "cover",
-      maxWidth: "100%",
-      borderRadius: "50%",
-    },
-    "& .profile-details": {
-      textAlign: "center",
-      "& span, svg": {
-        verticalAlign: "middle",
-      },
-      "& a": {
-        color: "#00bcd4",
-      },
-    },
-    "& hr": {
-      border: "none",
-      margin: "0 0 10px 0",
-    },
-    "& svg.button": {
-      "&:hover": {
-        cursor: "pointer",
-      },
-    },
-  },
-  buttons: {
-    textAlign: "center",
-    "& a": {
-      margin: "20px 10px",
-    },
-  },
+  
 });
 
 class Profile extends Component {
@@ -94,8 +48,8 @@ class Profile extends Component {
       user: {
         credentials: { handle, createdAt, imageUrl, bio, website, location },
         loading,
-        authenticated,
-      },
+        authenticated
+      }
     } = this.props;
     let profileMarkup = !loading ? (
       authenticated ? (
@@ -110,7 +64,7 @@ class Profile extends Component {
                 onChange={this.handleImageChange}
               />
               <NavButtons
-                tip="Edit Profile Picture"
+                tip="Edit profile picture"
                 onClick={this.handleEditPicture}
                 btnClassName="button"
               >
@@ -128,7 +82,7 @@ class Profile extends Component {
                 @{handle}
               </MuiLink>
               <hr />
-              {bio && <Typeography>{bio}</Typeography>}
+              {bio && <Typography variant="body2">{bio}</Typography>}
               <hr />
               {location && (
                 <Fragment>
@@ -140,30 +94,26 @@ class Profile extends Component {
                 <Fragment>
                   <LinkIcon color="primary" />
                   <a href={website} target="_blank" rel="noopener noreferrer">
-                    {" "}
+                    {' '}
                     {website}
                   </a>
                   <hr />
                 </Fragment>
               )}
-              <CalendarToday color="primary" />{" "}
-              <span>Joined {dayjs(createdAt).format("MMM YYYY")}</span>
+              <CalendarToday color="primary" />{' '}
+              <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
             </div>
-            <NavButtons
-                tip="Logout"
-                onClick={this.handleLogout}
-                btnClassName="button"
-              >
-                <KeyboardReturn color="primary" />
-              </NavButtons>
+            <NavButtons tip="Logout" onClick={this.handleLogout}>
+              <KeyboardReturn color="primary" />
+            </NavButtons>
             <EditDetails />
           </div>
         </Paper>
       ) : (
         <Paper className={classes.paper}>
-          <Typeography variant="body2" align="center">
+          <Typography variant="body2" align="center">
             No profile found, please login again
-          </Typeography>
+          </Typography>
           <div className={classes.buttons}>
             <Button
               variant="contained"
@@ -185,7 +135,7 @@ class Profile extends Component {
         </Paper>
       )
     ) : (
-      <p>loading...</p>
+      <ProfileSkeleton />
     );
 
     return profileMarkup;

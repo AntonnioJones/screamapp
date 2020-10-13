@@ -1,26 +1,28 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "./App.css";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import jwtDecode from "jwt-decode";
-//redux
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import {SET_AUTHENTICATED} from './redux/types';
-import {logoutUser, getUserData} from './redux/actions/userActions';
-//componets
-import Navbar from "./components/layout/Navbar";
-import themeObject from "./util/theme";
-import AuthRoute from "./util/AuthRoute";
-//pages
-import home from "./pages/home";
-import login from "./pages/login";
-import signup from "./pages/signup";
-import user from "./pages/user";
-import Axios from "axios";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import './App.css';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import jwtDecode from 'jwt-decode';
+// Redux
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import { SET_AUTHENTICATED } from './redux/types';
+import { logoutUser, getUserData } from './redux/actions/userActions';
+// Components
+import Navbar from './components/layout/Navbar';
+import themeObject from './util/theme';
+import AuthRoute from './util/AuthRoute';
+// Pages
+import home from './pages/home';
+import login from './pages/login';
+import signup from './pages/signup';
+import user from './pages/user';
+
+import axios from 'axios';
 
 const theme = createMuiTheme(themeObject);
+
 
 
 const token = localStorage.FBIdToken;
@@ -31,7 +33,7 @@ if (token) {
     window.location.href = "/login";
   } else {
     store.dispatch({type: SET_AUTHENTICATED});
-    Axios.defaults.headers.common['Authorization'] = token;
+    axios.defaults.headers.common['Authorization'] = token;
     store.dispatch(getUserData());
   }
 }

@@ -15,7 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 //redux
 import { connect } from "react-redux";
-import { postScream } from "../../redux/actions/dataActions";
+import { postScream, clearErrors } from "../../redux/actions/dataActions";
 
 const styles = (theme) => ({
     submitButton: {
@@ -130,7 +130,7 @@ class PostScream extends Component {
 PostScream.propTypes = {
   postScream: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
-  UI: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -138,6 +138,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(
-    mapStateToProps,
-    { postScream }
-  )(withStyles(styles)(PostScream));
+  mapStateToProps,
+  { postScream, clearErrors }
+)(withStyles(styles)(PostScream));

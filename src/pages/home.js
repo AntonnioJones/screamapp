@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Scream from '../components/scream/Scream';
 import Profile from '../components/profile/Profile';
-
+import ScreamSkeleton from '../util/ScreamSkeleton';
 
 
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ class home extends Component {
     let recentScreamsMarkup = !loading ? (
       screams.map((scream) => <Scream key={scream.screamId} scream={scream} />)
     ) : (
-      <div>...loading</div>
+      <ScreamSkeleton />
     );
     return (
       <Grid container>
@@ -35,11 +35,8 @@ class home extends Component {
 }
 
 home.propTypes = {
-  likeScream: PropTypes.func.isRequired,
-  unlikeScream: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
-  scream: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  getScreams: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
