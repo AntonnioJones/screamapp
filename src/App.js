@@ -23,8 +23,6 @@ import axios from 'axios';
 
 const theme = createMuiTheme(themeObject);
 
-
-
 const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);

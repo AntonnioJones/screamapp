@@ -1,58 +1,39 @@
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import NavButtons from "../../util/NavButtons";
-import ChatIcon from "@material-ui/icons/Chat";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import DeleteScream from "./DeleteScream";
-import ScreamDialog from "./ScreamDialog";
+import MyButton from '../../util/NavButtons';
+import DeleteScream from './DeleteScream';
+import ScreamDialog from './ScreamDialog';
+import LikeButton from './LikeButton';
+// MUI Stuff
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+// Icons
+import ChatIcon from '@material-ui/icons/Chat';
+// Redux
 import { connect } from 'react-redux';
 
 const styles = {
   card: {
-    position: "relative",
-    display: "flex",
-    marginBottom: 20,
-    marginRight: 10,
-    marginLeft: 10,
+    position: 'relative',
+    display: 'flex',
+    marginBottom: 20
   },
   image: {
-    minWidth: 200,
+    minWidth: 200
   },
   content: {
     padding: 25,
-    objectFit: "cover",
-  },
+    objectFit: 'cover'
+  }
 };
 
-export class Scream extends Component {
-  likedScream = () => {
-    if (
-      this.props.user.likes &&
-      this.props.user.likes.find(
-        (like) => like.screamId === this.props.scream.screamId
-      )
-    )
-      return true;
-    else return false;
-  };
-
-  likeScream = () => {
-    this.props.likeScream(this.props.scream.screamId)
-  }
-
-  unlikeScream = () => {
-    this.props.unlikeScream(this.props.scream.screamId)
-  }
-
+class Scream extends Component {
   render() {
     dayjs.extend(relativeTime);
     const {
@@ -64,31 +45,14 @@ export class Scream extends Component {
         userHandle,
         screamId,
         likeCount,
-        commentCount,
+        commentCount
       },
       user: {
         authenticated,
-        credentials: {handle}
+        credentials: { handle }
       }
     } = this.props;
 
-    const likeButton = !authenticated ? (
-      <NavButtons tip="like">
-        <Link to="/login">
-          <FavoriteBorder color="primary" />
-        </Link>
-      </NavButtons>
-    ) : (
-      this.likedScream() ? (
-        <NavButtons tip="undo like" onclick={this.unlikeScream}>
-          <FavoriteIcon color="primary" />
-        </NavButtons>
-      ) : (
-        <NavButtons tip="undo like" onclick={this.likeScream}>
-          <FavoriteBorder color="primary" />
-        </NavButtons>
-      )
-    );
     const deleteButton =
       authenticated && userHandle === handle ? (
         <DeleteScream screamId={screamId} />
@@ -105,20 +69,20 @@ export class Scream extends Component {
             variant="h5"
             component={Link}
             to={`/users/${userHandle}`}
-            color={"primary"}
+            color="primary"
           >
             {userHandle}
-            {deleteButton}
           </Typography>
+          {deleteButton}
           <Typography variant="body2" color="textSecondary">
             {dayjs(createdAt).fromNow()}
           </Typography>
           <Typography variant="body1">{body}</Typography>
-          {likeButton}
-          <span>{likeCount}</span>
-          <NavButtons tip="comments">
+          <LikeButton screamId={screamId} />
+          <span>{likeCount} Likes</span>
+          <MyButton tip="comments">
             <ChatIcon color="primary" />
-          </NavButtons>
+          </MyButton>
           <span>{commentCount} comments</span>
           <ScreamDialog
             screamId={screamId}

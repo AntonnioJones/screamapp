@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavButtons from '../../util/NavButtons';
+import MyButton from '../../util/NavButtons';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // Icons
@@ -21,27 +21,29 @@ export class LikeButton extends Component {
     else return false;
   };
   likeScream = () => {
+    
     this.props.likeScream(this.props.screamId);
   };
   unlikeScream = () => {
+    console.log("ok");
     this.props.unlikeScream(this.props.screamId);
   };
   render() {
     const { authenticated } = this.props.user;
     const likeButton = !authenticated ? (
       <Link to="/login">
-        <NavButtons tip="Like">
+        <MyButton tip="Like">
           <FavoriteBorder color="primary" />
-        </NavButtons>
+        </MyButton>
       </Link>
     ) : this.likedScream() ? (
-      <NavButtons tip="Undo like" onClick={this.unlikeScream}>
+      <MyButton tip="Undo like" onClick={this.unlikeScream}>
         <FavoriteIcon color="primary" />
-      </NavButtons>
+      </MyButton>
     ) : (
-      <NavButtons tip="Like" onClick={this.likeScream}>
+      <MyButton tip="Like" onClick={this.likeScream}>
         <FavoriteBorder color="primary" />
-      </NavButtons>
+      </MyButton>
     );
     return likeButton;
   }
